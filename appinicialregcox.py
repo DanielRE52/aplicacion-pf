@@ -87,11 +87,13 @@ if archivo is not None:
                     st.write("Las 8 variables que más disminuyen la probabilidad de reprobación son: ", min5)
                     st.info("**Como interpetar los valores**: Un Hazard Ratio superior a 1 indica que la variable aumenta la probabilidad de reprobacion. De misma manera, un Hazard Ratio menor que 1 indica que la variable disminuye la probabilidad de reprobación")
                     st.info("Ej: El Hazard Ratio de la variable ESTADO_ACADEMICO=ESTUDIANTE_DISTINGUIDO es 0.6. Esto implica que si el ESTADO_ACADEMICO del estudiante es Distinguido entonces su probabilidad de reprobación disminuye en un 40%.")
+                    #calculo del harrells concordance index para evaluar el modelo
                     st.subheader("Evaluación del Modelo: ")
                     prediction = estimator.predict(X)
                     result = concordance_index_censored(y[yevent], y[ytime],prediction)
                     st.write("**El Resultado del Harrell's Concordance Index es: ", f"{result[0]:.5f}**")
                     c_index = estimator.score(X,y)
+                    #ciclo que promptea una explicacion del HCI
                     if c_index > 0.75:
                         st.write("***En vista de que el HCI es superior a 0.75, se puede decir que el modelo representa correctamente la realidad.***")
                     elif c_index >=0.5:
