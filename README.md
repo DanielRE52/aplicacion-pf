@@ -1,25 +1,9 @@
-# 📦 Streamlit App Starter Kit 
-```
-⬆️ (Replace above with your app's name)
-```
+Aplicacion de regresion de cox.
 
-Description of the app ...
-
-## Demo App
-
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://app-starter-kit.streamlit.app/)
-
-## GitHub Codespaces
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/streamlit/app-starter-kit?quickstart=1)
-
-## Section Heading
-
-This is filler text, please replace this with text for this section.
-
-## Further Reading
-
-This is filler text, please replace this with a explanatory text about further relevant resources for this repo
-- Resource 1
-- Resource 2
-- Resource 3
+Recursos usados para su creacion:
+https://scikit-survival.readthedocs.io/en/stable/user_guide/00-introduction.html#Measuring-the-Performance-of-Survival-Models
+https://docs.streamlit.io/develop/api-reference
+https://youtu.be/d7fnzDQ5qM8?si=yO3i-SErdjz1LJc1
+https://youtu.be/_KvJuif-8i8?si=3Z72gnpIo_GVue4O
+https://youtu.be/D0D4Pa22iG0?si=wIpI8SCRvZKG8ZNL
+https://youtu.be/HKoOBiAaHGg?si=Glb2Frh8UAinhZBQ
