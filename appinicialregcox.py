@@ -22,7 +22,8 @@ st.info("Proyecto final del departamento de Ingenieria Industrial de la Universi
 st.write("***Carga un archivo CSV o Excel, selecciona las columnas de tiempo y evento, y construye la base para el análisis.***")
 
 #carga de archivo
-archivo = st.file_uploader("Selecciona tu base de datos", type=["csv", "xlsx"])
+st.subheader("Selección de base de datos y de variables de supervivencia.")
+archivo = st.file_uploader("Selecciona la base de datos la cual quieres evaluar.", type=["csv", "xlsx"])
 
 #lectura del archivo
 if archivo is not None:
@@ -40,9 +41,13 @@ if archivo is not None:
         st.write(f"Variables: {df.shape[1]}")
 
         columnas = df.columns.tolist()  #nombres de las variables en la base de datos
+        st.write("Selecciona las variables de supervivencia:")
+        st.info("**¿QUE SON LAS VARIABLES DE SUPERVIVENCIA?**: Las variables de supervivencia son las variables tiempo y evento.")
+        st.info("La variable **tiempo** representa el corte en el que el estudiante perdió la materia, o la cantidad de cortes que tiene la asignatura.")
+        st.info("La variable **evento** representa si el estudiante aprobó o reprobó la asignatura.")
 
-        ytime = st.selectbox("Seleccione la variable tiempo", columnas)  #ingreso de variable time
-        yevent = st.selectbox("Seleccione la variable evento", columnas)  #ingreso de variable event
+        ytime = st.selectbox("Selecciona la variable tiempo", columnas)  #ingreso de variable time
+        yevent = st.selectbox("Selecciona la variable evento", columnas)  #ingreso de variable event
 
         if ytime and yevent:
             if ytime == yevent:  #validacion de errores
@@ -52,11 +57,11 @@ if archivo is not None:
                 X = df.drop(columns=[ytime, yevent])  #creacion de x con el resto de variables de la base
 
                 st.success("Variables de tiempo y evento cargadas correctamente.")
-                st.subheader("Variables predictoras (X)")  #muestra de las variables a las que se les hara analisis
-                st.dataframe(X.head())
+        
+                
 
                 st.subheader("Variable de supervivencia (y)")  #muestra de variable de supervivencia
-                st.write(y)
+                
 
                 #dummies para variables categoricas
                 X = pd.get_dummies(X, drop_first=True)
@@ -79,21 +84,22 @@ if archivo is not None:
                     st.subheader("Hazard Ratios: Magnitud de influencia de las variables")
                     hazard_ratios = np.exp(estimator.coef_)
                     hazard_ratios_series = pd.Series(hazard_ratios, index=X.columns).sort_values(ascending=False)
-                    st.bar_chart(hazard_ratios_series,x_label="Variables", y_label="Magnitud de influencia de las variables", color="#192841")
+                    st.write(hazard_ratios_series)
+                    st.info("**Como interpretar los valores**: Un Hazard Ratio superior a 1 indica que la variable aumenta la probabilidad de reprobación. De misma manera, un Hazard Ratio menor que 1 indica que la variable disminuye la probabilidad de reprobación.")
+                    st.info("**Ejemplo 1**: Si el Hazard Ratio de la variable EDAD_INGRESO_16_17 es 1.5, esto implica que si un estudiante entro a la Universidad con 16 o 17 años su probabilidad de reprobación aumenta en un 50%.")
+                    st.info("**Ejemplo 2**: Si el Hazard Ratio de la variable ESTADO_ACADEMICO=ESTUDIANTE_DISTINGUIDO es 0.6. Esto implica que si el ESTADO_ACADEMICO del estudiante es Distinguido entonces su probabilidad de reprobación disminuye en un 40%.")
                     st.subheader("Variables más influyentes: ")
-                    max5 = hazard_ratios_series.nlargest(8)
-                    st.write("Las 8 variables que más aumentan la probabilidad de reprobación son: ", max5)
-                    min5= hazard_ratios_series.nsmallest(8)
-                    st.write("Las 8 variables que más disminuyen la probabilidad de reprobación son: ", min5)
-                    st.info("**Como interpetar los valores**: Un Hazard Ratio superior a 1 indica que la variable aumenta la probabilidad de reprobacion. De misma manera, un Hazard Ratio menor que 1 indica que la variable disminuye la probabilidad de reprobación")
-                    st.info("Ej: El Hazard Ratio de la variable ESTADO_ACADEMICO=ESTUDIANTE_DISTINGUIDO es 0.6. Esto implica que si el ESTADO_ACADEMICO del estudiante es Distinguido entonces su probabilidad de reprobación disminuye en un 40%.")
-                    #calculo del harrells concordance index para evaluar el modelo
+                    max5 = (hazard_ratios_series.nlargest(8)-1)*100
+                    st.write("Las 8 variables que más aumentan la probabilidad de reprobación son: ")
+                    st.bar_chart(max5, y_label = "Porcentaje de aumento", x_label ="Variables", color ="#000068")
+                    min5= (1-hazard_ratios_series.nsmallest(8))*100
+                    st.write("Las 8 variables que más disminuyen la probabilidad de reprobación son: ")
+                    st.bar_chart(min5, y_label = "Porcentaje de disminución", x_label ="Variables", color ="#89cff0")
                     st.subheader("Evaluación del Modelo: ")
                     prediction = estimator.predict(X)
                     result = concordance_index_censored(y[yevent], y[ytime],prediction)
                     st.write("**El Resultado del Harrell's Concordance Index es: ", f"{result[0]:.5f}**")
                     c_index = estimator.score(X,y)
-                    #ciclo que promptea una explicacion del HCI
                     if c_index > 0.75:
                         st.write("***En vista de que el HCI es superior a 0.75, se puede decir que el modelo representa correctamente la realidad.***")
                     elif c_index >=0.5:
