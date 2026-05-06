@@ -40,11 +40,11 @@ if archivo is not None:
         st.write(f"Observaciones: {df.shape[0]}")
         st.write(f"Variables: {df.shape[1]}")
 
-        columnas = df.columns.tolist()  #nombres de las variables en la base de datos
+        columnas = df.columns.tolist() #nombres de las variables en la base de datos
         st.write("Selecciona las variables de supervivencia:")
-        st.info("**¿QUE SON LAS VARIABLES DE SUPERVIVENCIA?**: Las variables de supervivencia son las variables tiempo y evento.")
-        st.info("La variable **tiempo** representa el corte en el que el estudiante perdió la materia, o la cantidad de cortes que tiene la asignatura.")
-        st.info("La variable **evento** representa si el estudiante aprobó o reprobó la asignatura.")
+        st.info("**¿QUE SON LAS VARIABLES DE SUPERVIVENCIA?**: Las variables tiempo y evento son las de interes para cualquier modelo de Regresion de Cox:")
+        st.info("La variable **tiempo** representa el corte en el que el estudiante perdió la materia, o la cantidad de cortes que tiene la asignatura. En el caso del presente proyecto diseño e investigación, se interpreta como la cantidad de cortes de la asignatura, puesto que se asume que todos los estudiantes pierden o ganan la materia al final del semestre.")
+        st.info("Por su parte, la variable **evento** representa si el estudiante aprobó o reprobó la asignatura.")
 
         ytime = st.selectbox("Selecciona la variable tiempo", columnas)  #ingreso de variable time
         yevent = st.selectbox("Selecciona la variable evento", columnas)  #ingreso de variable event
