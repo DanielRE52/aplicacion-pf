@@ -46,15 +46,33 @@ if archivo is not None:
         st.info("Por su parte, la **variable evento** indica si el suceso de interés ocurrió. Para este análisis, el evento corresponde al resultado académico del estudiante en la asignatura, es decir, si aprobó o reprobó.")
         
         columnas = df.columns.tolist()
-        if "TIEMPO" in columnas and "ESTADO" in columnas:
-            index_tiempo = columnas.index("TIEMPO")
-            index_estado = columnas.index("ESTADO")
-            ytime = st.selectbox("Seleccione la variable tiempo", columnas, index=index_tiempo)
-            yevent = st.selectbox("Seleccione la variable evento", columnas, index=index_estado)
+        if "TIEMPO" in columnas and "EVENTO" in columnas:
+            ytime = "TIEMPO"
+            yevent = "EVENTO"
+            st.success("Se reconocieron automáticamente las columnas 'TIEMPO' y 'EVENTO'.")
         else:
-            st.error("El archivo debe contener las columnas 'TIEMPO' y 'ESTADO'.")
-            st.write("Renombra las columnas correspondientes")
-            st.data_editor(df)
+            st.warning("No se encontraron automáticamente las columnas 'TIEMPO' y 'EVENTO'.")
+            st.write("Escriba manualmente el nombre de las columnas correspondientes.")
+            col_tiempo = st.text_input("Nombre de la columna de tiempo")
+            col_evento = st.text_input("Nombre de la columna de evento")
+            
+            if col_tiempo and col_evento:
+                if col_tiempo == col_evento:
+                    st.error("La columna de tiempo y la columna de evento deben ser diferentes.")
+                    ytime = None
+                    yevent = None
+                elif col_tiempo not in columnas or col_evento not in columnas:
+                    st.error("Uno o ambos nombres ingresados no existen en la base de datos.")
+                    ytime = None
+                    yevent = None
+                else:
+                    df = df.rename(columns={
+                col_tiempo: "TIEMPO",
+                col_evento: "EVENTO"
+                    })
+                    ytime = "TIEMPO"
+                    yevent = "EVENTO"
+                    st.success("Las columnas fueron renombradas correctamente a 'TIEMPO' y 'EVENTO'.")
 
         if ytime and yevent:
             if ytime == yevent:  #validacion de errores
