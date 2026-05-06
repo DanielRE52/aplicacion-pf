@@ -44,18 +44,17 @@ if archivo is not None:
         st.info("En un modelo de regresión de Cox, las variables de supervivencia son fundamentales porque **permiten definir cuándo ocurre el evento de interés y si dicho evento ocurrió o no**. En este caso, se deben seleccionar dos variables: una de tiempo y una de evento")
         st.info("La **variable tiempo** representa el periodo transcurrido hasta que se observa el resultado de interés. En el contexto de este proyecto, se interpreta como la cantidad de cortes académicos de la asignatura, ya que se asume que el resultado final del estudiante (aprobar o reprobar) se determina al finalizar el semestre.")
         st.info("Por su parte, la **variable evento** indica si el suceso de interés ocurrió. Para este análisis, el evento corresponde al resultado académico del estudiante en la asignatura, es decir, si aprobó o reprobó.")
-
+        
         columnas = df.columns.tolist()
         if "TIEMPO" in columnas and "ESTADO" in columnas:
-            ytime = "TIEMPO"
-            yevent = "ESTADO"
+            index_tiempo = columnas.index("TIEMPO")
+            index_estado = columnas.index("ESTADO")
+            ytime = st.selectbox("Seleccione la variable tiempo", columnas, index=index_tiempo)
+            yevent = st.selectbox("Seleccione la variable evento", columnas, index=index_estado)
         else:
             st.error("El archivo debe contener las columnas 'TIEMPO' y 'ESTADO'.")
             st.write("Renombra las columnas correspondientes")
             st.data_editor(df)
-
-        ytime = st.selectbox("Selecciona la variable tiempo", columnas)  #ingreso de variable time
-        yevent = st.selectbox("Selecciona la variable evento", columnas)  #ingreso de variable event
 
         if ytime and yevent:
             if ytime == yevent:  #validacion de errores
