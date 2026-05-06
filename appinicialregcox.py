@@ -40,11 +40,19 @@ if archivo is not None:
         st.write(f"Observaciones: {df.shape[0]}")
         st.write(f"Variables: {df.shape[1]}")
 
-        columnas = df.columns.tolist() #nombres de las variables en la base de datos
         st.write("Selecciona las variables de supervivencia:")
-        st.info("**¿QUE SON LAS VARIABLES DE SUPERVIVENCIA?**: Las variables tiempo y evento son las de interes para cualquier modelo de Regresion de Cox:")
-        st.info("La variable **tiempo** representa el corte en el que el estudiante perdió la materia, o la cantidad de cortes que tiene la asignatura. En el caso del presente proyecto diseño e investigación, se interpreta como la cantidad de cortes de la asignatura, puesto que se asume que todos los estudiantes pierden o ganan la materia al final del semestre.")
-        st.info("Por su parte, la variable **evento** representa si el estudiante aprobó o reprobó la asignatura.")
+        st.info("En un modelo de regresión de Cox, las variables de supervivencia son fundamentales porque **permiten definir cuándo ocurre el evento de interés y si dicho evento ocurrió o no**. En este caso, se deben seleccionar dos variables: una de tiempo y una de evento")
+        st.info("La **variable tiempo** representa el periodo transcurrido hasta que se observa el resultado de interés. En el contexto de este proyecto, se interpreta como la cantidad de cortes académicos de la asignatura, ya que se asume que el resultado final del estudiante (aprobar o reprobar) se determina al finalizar el semestre.")
+        st.info("Por su parte, la **variable evento** indica si el suceso de interés ocurrió. Para este análisis, el evento corresponde al resultado académico del estudiante en la asignatura, es decir, si aprobó o reprobó.")
+
+        columnas = df.columns.tolist()
+        if "TIEMPO" in columnas and "ESTADO" in columnas:
+            ytime = "TIEMPO"
+            yevent = "ESTADO"
+        else:
+            st.error("El archivo debe contener las columnas 'TIEMPO' y 'ESTADO'.")
+            st.write("Renombra las columnas correspondientes")
+            st.data_editor(df)
 
         ytime = st.selectbox("Selecciona la variable tiempo", columnas)  #ingreso de variable time
         yevent = st.selectbox("Selecciona la variable evento", columnas)  #ingreso de variable event
