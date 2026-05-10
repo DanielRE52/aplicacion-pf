@@ -122,10 +122,10 @@ if archivo is not None:
                     st.info("**Ejemplo 2**: Si el Hazard Ratio de la variable ESTADO_ACADEMICO=ESTUDIANTE_DISTINGUIDO es 0.6. Esto implica que si el ESTADO_ACADEMICO del estudiante es Distinguido entonces su probabilidad de reprobación disminuye en un 40%.")
                     st.subheader("Variables más influyentes: ")
                     max5 = (hazard_ratios_series.nlargest(8)-1)*100
-                    st.write("Las 8 variables que más aumentan la probabilidad de reprobación son: ")
+                    st.write("Las 8 variables que más aumentan la probabilidad de reprobación son (***Valores presentados en porcentaje***): ")
                     st.bar_chart(max5, y_label = "Porcentaje de aumento", x_label ="Variables", color ="#000068")
                     min5= (1-hazard_ratios_series.nsmallest(8))*100
-                    st.write("Las 8 variables que más disminuyen la probabilidad de reprobación son: ")
+                    st.write("Las 8 variables que más disminuyen la probabilidad de reprobación son (***Valores presentados en porcentaje***): ")
                     st.bar_chart(min5, y_label = "Porcentaje de disminución", x_label ="Variables", color ="#89cff0")
 
                     st.subheader("Evaluación del Modelo: ")
@@ -170,7 +170,7 @@ if archivo is not None:
                     #resultados de que variable individual tiene mayor poder predictivo
                     scores = fit_and_score_features(X_train.values, y_train)
                     feature_scores = pd.Series(scores, index=X_train.columns).sort_values(ascending=False)
-                    st.write("**Poder predictivo de cada variable individual:** ",feature_scores)
+                    st.write("**Poder predictivo de cada variable individual (C-index):** ",feature_scores)
                     #pipeline para indicar los procesos a realizar, primero se debe normalizar despues seleccionar el mejor k para un modelo de cox con regularizacion
                     pipe = Pipeline(
                         [
@@ -238,7 +238,7 @@ if archivo is not None:
                     modreduc_hrnegativos = modreduc_hr_series[modreduc_hr_series < 1]
                     st.write("Las variables que aumentan la probabilidad de reprobación son (***Valores presentados en porcentaje***): ")
                     st.bar_chart((modreduc_hrpositivos-1)*100, y_label = "Porcentaje de aumento", x_label ="Variables", color ="#6f32a8")
-                    st.write("Las variables que disminuyen la probabilidad de reprobación son: ")   
+                    st.write("Las variables que disminuyen la probabilidad de reprobación son (***Valores presentados en porcentaje***): ")   
                     st.bar_chart((1-modreduc_hrnegativos)*100, y_label = "Porcentaje de disminución", x_label ="Variables", color ="#a83271")
       
         else:
