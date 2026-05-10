@@ -232,7 +232,7 @@ if archivo is not None:
                     #hazard ratios del modelo final reducido
                     modreduc_hr = np.exp(modreduc_coefs)
                     st.subheader("Hazard Ratios del modelo final: ")
-                    st.write(pd.Series(modreduc_hr,index=selected_features))
+                    st.write(pd.Series(modreduc_hr,index=selected_features).sort_values(ascending=False))
                 
         else:
             st.warning("La base de datos no tiene columnas numéricas para analizar.")
