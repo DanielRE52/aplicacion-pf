@@ -201,13 +201,13 @@ if archivo is not None:
                         gcv.fit(X_train, y_train)
                         #resultados del gridsearch
                         results = pd.DataFrame(gcv.cv_results_).sort_values(by="mean_test_score", ascending=False)
-                        results.loc[:, ~results.columns.str.endswith("_time")]
 
                     #resultado final
                     pipe.set_params(**gcv.best_params_)
                     pipe.fit(X_train, y_train)
 
                     #informacion del modelo final
+                    st.subheader("Información general del modelo final de Cox: ")
                     transformer, final_estimator = pipe.named_steps["select"], pipe.named_steps["model"]
 
                     #variables con las que se queda el modelo final reducido
@@ -215,10 +215,18 @@ if archivo is not None:
 
                     #coeficientes del modelo
                     modreduc_coefs = pd.Series(final_estimator.coef_, index=selected_features)
-                    st.write(f"Numero óptimo de variables: {gcv.best_params_['select__k']}")
+                    st.write(f"**Numero óptimo de variables**: {gcv.best_params_['select__k']}")
 
                     #C-index del modelo final reducido
-                    st.write(f"C-index CV: {gcv.best_score_:.4f}")
+                    st.subheader("Evaluación del modelo final: ")
+                    st.write(f"El Harrell's Concordance Index del modelo final es: {gcv.best_score_:.4f}")
+                    c_index_final = gcv.best_score_
+                    if c_index_final > 0.75:
+                        st.write("***En vista de que el C-index para el modelo final es superior a 0.75, se puede decir que el modelo representa correctamente la realidad.***")
+                    elif c_index_final >=0.5:
+                        st.write("***En vista de que el C-index para el modelo de testing es superior a 0.5 pero inferior a 0.75, se puede decir que el modelo representa parcialmente la realidad.***")
+                    else:
+                        st.write("***En vista de que el C-index para el modelo de testing es inferior a 0.5, se puede decir que el modelo es aleatorio.***")
                     st.subheader("Variables seleccionadas y sus coeficientes:")
                     st.write(modreduc_coefs.sort_values(ascending=False))
                     #hazard ratios del modelo final reducido
