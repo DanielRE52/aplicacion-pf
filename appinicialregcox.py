@@ -87,12 +87,8 @@ if archivo is not None:
                 y = Surv.from_dataframe(event=yevent, time=ytime, data=df)  #creacion de y con las variables time y event
                 X = df.drop(columns=[ytime, yevent])  #creacion de x con el resto de variables de la base
 
-                
-
                 st.success("Variables de tiempo y evento cargadas correctamente.")
-                st.subheader("Variable de supervivencia (y)")  #muestra de variable de supervivencia
                 
-
                 #dummies para variables categoricas
                 X = pd.get_dummies(X, drop_first=True)
 
@@ -174,7 +170,7 @@ if archivo is not None:
                     #resultados de que variable individual tiene mayor poder predictivo
                     scores = fit_and_score_features(X_train.values, y_train)
                     feature_scores = pd.Series(scores, index=X_train.columns).sort_values(ascending=False)
-                    st.write("Poder predictivo de cada variable individual: ",feature_scores)
+                    st.write("**Poder predictivo de cada variable individual:** ",feature_scores)
                     #pipeline para indicar los procesos a realizar, primero se debe normalizar despues seleccionar el mejor k para un modelo de cox con regularizacion
                     pipe = Pipeline(
                         [
@@ -223,13 +219,13 @@ if archivo is not None:
 
                     #C-index del modelo final reducido
                     st.write(f"C-index CV: {gcv.best_score_:.4f}")
-                    st.write("Variables seleccionadas y sus coeficientes:")
+                    st.subheader("Variables seleccionadas y sus coeficientes:")
                     st.write(modreduc_coefs.sort_values(ascending=False))
                     #hazard ratios del modelo final reducido
                     modreduc_hr = np.exp(modreduc_coefs)
+                    st.subheader("Hazard Ratios del modelo final: ")
                     st.write(pd.Series(modreduc_hr,index=selected_features))
-                    
-
+                
         else:
             st.warning("La base de datos no tiene columnas numéricas para analizar.")
 
