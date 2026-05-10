@@ -233,7 +233,14 @@ if archivo is not None:
                     modreduc_hr = np.exp(modreduc_coefs)
                     st.subheader("Hazard Ratios del modelo final: ")
                     st.write(pd.Series(modreduc_hr,index=selected_features).sort_values(ascending=False))
-                
+                    modreduc_hr_series = pd.Series(modreduc_hr, index=selected_features).sort_values(ascending=False)
+                    modreduc_hrpositivos = modreduc_hr_series[modreduc_hr_series > 1]
+                    modreduc_hrnegativos = modreduc_hr_series[modreduc_hr_series < 1]
+                    st.write("Las variables que aumentan la probabilidad de reprobación son (***Valores presentados en porcentaje***): ")
+                    st.bar_chart((modreduc_hrpositivos-1)*100, y_label = "Porcentaje de aumento", x_label ="Variables", color ="#6f32a8")
+                    st.write("Las variables que disminuyen la probabilidad de reprobación son: ")   
+                    st.bar_chart((1-modreduc_hrnegativos)*100, y_label = "Porcentaje de disminución", x_label ="Variables", color ="#a83271")
+      
         else:
             st.warning("La base de datos no tiene columnas numéricas para analizar.")
 
