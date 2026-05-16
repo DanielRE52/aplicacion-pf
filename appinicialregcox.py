@@ -129,12 +129,12 @@ if archivo is not None:
                         st.info("**Ejemplo 2**: Si el Hazard Ratio de la variable ESTADO_ACADEMICO=ESTUDIANTE_DISTINGUIDO es 0.6. Esto implica que si el ESTADO_ACADEMICO del estudiante es Distinguido entonces su probabilidad de reprobación disminuye en un 40%.")
                         st.divider()
                         st.subheader("Variables más influyentes: ")
-                        max8 = (hazard_ratios_series.nlargest(8)-1)*100
-                        st.write("Las 8 variables que más aumentan la probabilidad de reprobación son (***Valores presentados en porcentaje***): ")
-                        st.bar_chart(max8, y_label = "Porcentaje de aumento", x_label ="Variables", color ="#000068")
-                        min5= (1-hazard_ratios_series.nsmallest(8))*100
-                        st.write("Las 8 variables que más disminuyen la probabilidad de reprobación son (***Valores presentados en porcentaje***): ")
-                        st.bar_chart(min5, y_label = "Porcentaje de disminución", x_label ="Variables", color ="#89cff0")
+                        max10 = (hazard_ratios_series.nlargest(10)-1)*100
+                        st.write("Las 10 variables que más aumentan la probabilidad de reprobación son (***Valores presentados en porcentaje***): ")
+                        st.bar_chart(max10, y_label = "Porcentaje de aumento", x_label ="Variables", color ="#000068")
+                        min10= (1-hazard_ratios_series.nsmallest(10))*100
+                        st.write("Las 10 variables que más disminuyen la probabilidad de reprobación son (***Valores presentados en porcentaje***): ")
+                        st.bar_chart(min10, y_label = "Porcentaje de disminución", x_label ="Variables", color ="#89cff0")
                         st.divider()
                         st.subheader("Evaluación del Modelo: ")
                         st.info("En la regresión de Cox se emplea el Harrell's Concordance Index, o C-index, para validar que tan bueno es el ajuste del modelo. Un C-index de 0 indica que el modelo es perfectamente incorrecto, 0.5 significa que es aleatorio, mientras que si es 1 si el modelo es totalmente correcto.")
