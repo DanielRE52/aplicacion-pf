@@ -373,7 +373,6 @@ if archivo is not None:
                     st.subheader("Perfil de riesgo del estudiante: ")
                     if df2.loc[idx, "PERFIL_DE_RIESGO_1"] == 1 & df2.loc[idx, "PERFIL_DE_RIESGO_2"] == 1:
                         st.warning("Este estudiante pertenece a los Perfiles de Riesgo 1 y 2, es decir, ha tenido un desempeño académico bajo en la asignatura, un bajo rendimiento histórico, y un bajo rendimiento en el semestre.")
-                        st.warning("
                     elif df2.loc[idx, "PERFIL_DE_RIESGO_1"] == 1 & df2.loc[idx, "PERFIL_DE_RIESGO_3"] == 1:
                         st.warning("Este estudiante pertenece a los Perfiles de Riesgo 1 y 3, es decir, ha tenido un desempeño académico bajo en la asignatura, un bajo rendimiento histórico, y tiene condiciones sociodemograficas vulnerables.")
                     elif df2.loc[idx, "PERFIL_DE_RIESGO_1"] == 1 & df2.loc[idx, "PERFIL_DE_RIESGO_4"] == 1:
