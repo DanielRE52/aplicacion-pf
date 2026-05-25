@@ -373,6 +373,7 @@ if archivo is not None:
                     st.subheader("Perfil de riesgo del estudiante: ")
                     if df2.loc[idx, "PERFIL_DE_RIESGO_1"] == 1 & df2.loc[idx, "PERFIL_DE_RIESGO_2"] == 1:
                         st.warning("Este estudiante pertenece a los Perfiles de Riesgo 1 y 2, es decir, ha tenido un desempeño académico bajo en la asignatura, un bajo rendimiento histórico, y un bajo rendimiento en el semestre.")
+                        st.warning("
                     elif df2.loc[idx, "PERFIL_DE_RIESGO_1"] == 1 & df2.loc[idx, "PERFIL_DE_RIESGO_3"] == 1:
                         st.warning("Este estudiante pertenece a los Perfiles de Riesgo 1 y 3, es decir, ha tenido un desempeño académico bajo en la asignatura, un bajo rendimiento histórico, y tiene condiciones sociodemograficas vulnerables.")
                     elif df2.loc[idx, "PERFIL_DE_RIESGO_1"] == 1 & df2.loc[idx, "PERFIL_DE_RIESGO_4"] == 1:
@@ -405,6 +406,11 @@ if archivo is not None:
                         st.warning("Este estudiante pertenece al Perfil de Riesgo 1, es decir, ha tenido un desempeño académico bajo en la asignatura y un bajo rendimiento histórico, en vista de que su estado academico es de periodo de prueba.")
                     elif df2.loc[idx, "PERFIL_DE_RIESGO_2"] == 1:
                         st.warning("Este estudiante pertenece al Perfil de Riesgo 2, es decir, ha tenido un desempeño académico bajo en la asignatura y en el semestre.")
+                        st.warning("Para de este perfil de riesgo se sugiere: ")
+                        st.warning("-Realizar seguimiento académico general y proponer tutorías para fortalecer hábitos de estudio y desempeño acumulado.")
+                        st.warning("-Analizar la evolución del estudiante durante el semestre y reforzar los momentos donde se evidencia mayor caída.")
+                        st.warning("-Revisar los temas evaluados en los cortes con bajo desempeño y asignar actividades de refuerzo específicas.")
+                        st.warning("-Planeación de monitorias adicionales focalizadas en las falencias grupales que presenten los estudiantes pertenecientes al perfil de riesgo.")
                     elif df2.loc[idx, "PERFIL_DE_RIESGO_3"] == 1:
                         st.warning("Este estudiante pertenece al Perfil de Riesgo 3, es decir, ha tenido un desempeño académico bajo en la asignatura y tiene condiciones sociodemograficas vulnerables.")
                     elif df2.loc[idx, "PERFIL_DE_RIESGO_4"] == 1:
