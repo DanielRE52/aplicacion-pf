@@ -239,8 +239,26 @@ if archivo is not None:
                     st.session_state["X_xgb_cols"] = X_xgb.columns
  
                     st.subheader("Evaluación del modelo XGBoost:")
+                    with st.expander("Presiona aquí si deseas conocer como se hace la evaluación de un modelo de XGBoost."):
+                        st.subheader("¿Qué es la métrica AUC-ROC?")
+                        st.write("La métrica AUC-ROC (Area Under the Curve – Receiver Operating Characteristic) permite evaluar la capacidad del modelo para diferenciar correctamente entre las dos clases del problema de clasificación binaria. La curva ROC representa la relación entre la tasa de verdaderos positivos (True Positive Rate) y la tasa de falsos positivos (False Positive Rate).")
+                        st.write("Por su parte, el valor AUC corresponde al área bajo dicha curva. Su interpretación general es la siguiente:")
+                        st.write("AUC cercano a 0.5 = desempeño similar al azar")
+                        st.write("AUC entre 0.7 y 0.8 = desempeño aceptable")
+                        st.write("AUC entre 0.8 y 0.9 = buen desempeño")
+                        st.write("AUC superior a 0.9 = desempeño excelente")
+                        
                     st.write(f"**Accuracy:** {accuracy_score(y_test_xgb, y_pred):.4f}")
                     st.write(f"**AUC-ROC:** {roc_auc_score(y_test_xgb, y_prob):.4f}")
+                    if roc_auc_score(y_test_xgb, y_prob) >= 0.9:
+                        st.write("En vista de que el valor de la curva AUC-ROC es mayor o igual que 0.9, el desempeño del modelo es excelente.")
+                    elif roc_auc_score(y_test_xgb, y_prob) >= 0.8:
+                        st.write("En vista de que el valor de la curva AUC-ROC es mayor o igual que 0.8, el desempeño del modelo es bueno.")
+                    elif roc_auc_score(y_test_xgb, y_prob) >= 0.7:
+                        st.write("En vista de que el valor de la curva AUC-ROC es mayor o igual que 0.8, el desempeño del modelo es aceptable.")
+                    else:
+                        st.write("En vista de que el valor de la curva AUC-ROC es mayor o igual que 0.8, el desempeño del modelo es aleatorio o deficiente.")
+                        
                     with st.expander("Presiona aqui si deseas ver la matriz de confusión y el reporte de clasificación."):
                         st.write("**Matriz de confusión:**")
                         st.dataframe(pd.DataFrame(
@@ -284,6 +302,8 @@ if archivo is not None:
                     st.dataframe(explicacion_individual.head(10))
                     st.info("**Como interpretar los valores**: Valor_estudiante representa el valor de la variable para el estudiante seleccionado, con 1 siendo verdadero y 0 siendo falso.")
                     st.info("Los valores SHAP positivos indican que la variable aumenta la probabilidad del evento, y por su contrario los negativos indican que la variable disminuye la probabilidad del evento. La magnitud del valor SHAP representa qué tan fuerte es la influencia de la variable sobre la predicción.")
+                    st.info("**Ejemplo 1**: Si la variable P2_MENOR_2 presenta un valor SHAP de +1.5, esto significa que haber obtenido una nota menor a 2 en el segundo corte aumenta significativamente la probabilidad de reprobación del estudiante.")
+                    st.info("**Ejemplo 2**: Si la variable PGA_4_5 presenta un valor SHAP de -0.8, esto implica que tener un promedio acumulado entre 4 y 5 reduce la probabilidad de reprobación y favorece la aprobación del estudiante.")
 
                     #creacion de dataframe para los perfiles de riesgo  
                     df2 = pd.DataFrame(X_test_xgb.values, columns=X_test_xgb.columns)
